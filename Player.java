@@ -20,14 +20,36 @@ public class Player {
         return false;
     }
 
-    /*
-     * TODO: used for finding the longest chain in this player hand
-     * this method should iterate over playerTiles to find the longest chain
+    /**
+     * This method finds the longest chain in this player hand
+     * this method iterates over playerTiles to find the longest chain
      * of consecutive numbers, used for checking the winning condition
-     * and also for determining the winner if tile stack has no tiles
+     * and also for determining the winner if tile stack has no tiles.
      */
     public int findLongestChain() {
         int longestChain = 0;
+        int currentChain = 0;
+        int currentValue;
+        int previousValue = -1;
+
+        for (Tile t : playerTiles) {
+            currentValue = t.getValue();
+
+            if (currentValue == previousValue + 1) { // If current value is consecutive
+                currentChain++;
+            }
+            else if (currentValue != previousValue) { // Ignoring the case that player has same number multiple times
+                if (currentChain > longestChain) { // If current chain is larger than the longest chain so far
+                    longestChain = currentChain;
+                }
+
+                // Resetting the chain
+                currentChain = 1;
+            }
+
+            // Updating previous value
+            previousValue = currentValue;
+        }
 
         return longestChain;
     }
@@ -39,13 +61,25 @@ public class Player {
         return null;
     }
 
-    /*
-     * TODO: adds the given tile to this player's hand keeping the ascending order
-     * this requires you to loop over the existing tiles to find the correct position,
-     * then shift the remaining tiles to the right by one
+    /**
+     * This method adds the given tile to this player's hand keeping the ascending order
+     * by looping over the existing tiles to find the correct position,
+     * then shifts the remaining tiles to the right by one.
      */
     public void addTile(Tile t) {
+        int insertionIndex;
 
+        // While the tile t's value is smaller than the tile's value in insertion index, we increment the insertion index.
+        for (insertionIndex = 0; playerTiles[insertionIndex] != null && t.getValue() > playerTiles[insertionIndex].getValue(); insertionIndex++);
+
+        // Updating the player tiles array
+        for (int updateIndex = playerTiles.length - 1; updateIndex > insertionIndex; updateIndex--) {
+            playerTiles[updateIndex] = playerTiles[updateIndex - 1];
+        }
+
+        // Inserting the new tile
+        playerTiles[insertionIndex] = t;
+        this.numberOfTiles++;
     }
 
     /*

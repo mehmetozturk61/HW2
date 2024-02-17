@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class SimplifiedOkeyGame {
 
     Player[] players;
@@ -29,13 +31,22 @@ public class SimplifiedOkeyGame {
         tileCount = 104;
     }
 
-    /*
-     * TODO: distributes the starting tiles to the players
-     * player at index 0 gets 15 tiles and starts first
-     * other players get 14 tiles, this method assumes the tiles are already shuffled
+    /**
+     * This method distributes the starting tiles to the players player at index 0 gets 15 tiles and starts first
+     * other players get 14 tiles, this method assumes the tiles are already shuffled.
      */
     public void distributeTilesToPlayers() {
+        int tileIndex = 0;
 
+        for (int playerIndex = 0; playerIndex < players.length; playerIndex++) {
+            for (int j = 0; j < 14; j++) {
+                players [playerIndex].addTile (tiles [tileIndex]);
+                tileIndex++;
+            }
+        }
+
+        // Adding one extra tile to the first player
+        players[0].addTile (tiles [tileIndex]);
     }
 
     /*
@@ -57,11 +68,23 @@ public class SimplifiedOkeyGame {
         return null;
     }
 
-    /*
-     * TODO: should randomly shuffle the tiles array before game starts
+    /**
+     * This method randomly shuffles the tiles array using Fisher-Yates shuffle before game starts.
+     * 
+     * @see <a href=https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle>Fisher-Yates Shuffle</a>
      */
     public void shuffleTiles() {
+        Random random = new Random();
 
+        for (int i = tiles.length - 1; i > 0; i--) {
+            // Pick a random index from 0 to i
+            int randomIndex = random.nextInt(i + 1);
+
+            // Swap tiles[i] and tiles[randomIndex]
+            Tile temp = tiles[i];
+            tiles[i] = tiles[randomIndex];
+            tiles[randomIndex] = temp;
+        }
     }
 
     /*
