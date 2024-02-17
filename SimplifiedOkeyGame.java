@@ -95,12 +95,33 @@ public class SimplifiedOkeyGame {
         return false;
     }
 
-    /* TODO: finds the player who has the highest number for the longest chain
+    /* finds the player who has the highest number for the longest chain
      * if multiple players have the same length may return multiple players
      */
     public Player[] getPlayerWithHighestLongestChain() {
-        Player[] winners = new Player[1];
 
+        int maximum = 0;
+        int maximumCount = 0;
+        int indexCount = 0;
+        for( int i = 0 ; i < players.length ; i++)
+        {
+            int longestChain = players[i].findLongestChain();
+            if( longestChain > maximum)
+                maximum = longestChain;
+        }
+        for( int i = 0 ; i < players.length ; i++)
+        {
+            int longestChain = players[i].findLongestChain();
+            if( longestChain == maximum)
+                maximumCount++; 
+        }
+        Player winners[] = new Player[maximumCount];
+        for( int i = 0 ; i < players.length ; i++)
+        {
+            int longestChain = players[i].findLongestChain();
+            if( longestChain == maximum)
+                winners[indexCount++] = players[i];
+        }
         return winners;
     }
     
