@@ -50,12 +50,11 @@ public class SimplifiedOkeyGame {
     }
 
     /*
-     * TODO: get the last discarded tile for the current player
-     * (this simulates picking up the tile discarded by the previous player)
-     * it should return the toString method of the tile so that we can print what we picked
+     * Adds the last discarded tile to player's hand. Returns last discarded tile.
      */
     public String getLastDiscardedTile() {
-        return null;
+        players[currentPlayerIndex].addTile(lastDiscardedTile);
+        return lastDiscardedTile.toString();
     }
 
     /*
@@ -88,11 +87,11 @@ public class SimplifiedOkeyGame {
     }
 
     /*
-     * TODO: check if game still continues, should return true if current player
-     * finished the game. use checkWinning method of the player class to determine
+     * Returns true if current player has met the winning condition or there isn't any tile left in the stack.
      */
     public boolean didGameFinish() {
-        return false;
+        
+        return players[this.getCurrentPlayerIndex()].checkWinning() || !this.hasMoreTileInStack(); 
     }
 
     /* finds the player who has the highest number for the longest chain
@@ -157,7 +156,7 @@ public class SimplifiedOkeyGame {
      * that player's tiles
      */
     public void discardTile(int tileIndex) {
-
+        
     }
 
     public void displayDiscardInformation() {

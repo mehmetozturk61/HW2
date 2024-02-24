@@ -9,14 +9,14 @@ public class Player {
         numberOfTiles = 0; // currently this player owns 0 tiles, will pick tiles at the beggining of the game
     }
 
-    /*
-     * TODO: checks this player's hand to determine if this player is winning
-     * the player with a complete chain of 14 consecutive numbers wins the game
-     * note that the player whose turn is now draws one extra tile to have 15 tiles in hand,
-     * and the extra tile does not disturb the longest chain and therefore the winning condition
-     * check the assigment text for more details on winning condition
+    /**
+     * This method checks the winning condition with findLongestChain method.
      */
     public boolean checkWinning() {
+        int playerChain = this.findLongestChain();
+        if(playerChain + 1 == 14){
+            return true;
+        } 
         return false;
     }
 
@@ -55,10 +55,17 @@ public class Player {
     }
 
     /*
-     * TODO: removes and returns the tile in given index position
+     * This method removes and returns the tile in given index position
      */
     public Tile getAndRemoveTile(int index) {
-        return null;
+        Tile removedTile = playerTiles[index];
+        for(int i = index + 1; i <= numberOfTiles; i++){
+            playerTiles[i-1] = playerTiles[i]; 
+        }
+        numberOfTiles--;
+
+        
+        return removedTile;
     }
 
     /**
