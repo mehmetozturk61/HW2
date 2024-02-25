@@ -29,7 +29,7 @@ public class SimplifiedOkeyGame {
             }
         }
 
-        tileCount = 104;
+        tileCount = 57;
     }
 
     /**
@@ -54,7 +54,6 @@ public class SimplifiedOkeyGame {
      * Adds the last discarded tile to player's hand. Returns last discarded tile.
      */
     public String getLastDiscardedTile() {
-        players[currentPlayerIndex].addTile(lastDiscardedTile);
         return lastDiscardedTile.toString();
     }
 
@@ -66,11 +65,7 @@ public class SimplifiedOkeyGame {
      */
     public String getTopTile() {
 
-        Tile addedTile = tiles[tiles.length - 1];
-        players[currentPlayerIndex].addTile(addedTile);
-
-        tiles = Arrays.copyOf(tiles, tiles.length - 1);
-
+        Tile addedTile = tiles[tileCount];
         return addedTile.toString();
     }
 
@@ -135,7 +130,7 @@ public class SimplifiedOkeyGame {
      * checks if there are more tiles on the stack to continue the game
      */
     public boolean hasMoreTileInStack() {
-        return tileCount != 0;
+        return tileCount !=103;
     }
 
     /*
@@ -148,23 +143,25 @@ public class SimplifiedOkeyGame {
 
         Player p = players[getCurrentPlayerIndex()];
 
-        // A reference to the original array.
-        Tile[] originalPlayerTiles = p.playerTiles;
         int prevLongestChain = p.findLongestChain();
-
+        
         // Changes the playerTiles reference to a temporary array and adds the last discarded tile to that array to use the findLongestChain() method.
-        p.playerTiles = Arrays.copyOf(p.playerTiles, p.playerTiles.length);
         p.addTile(lastDiscardedTile);
+
         int newLongestChain = p.findLongestChain();
 
-        // Changes the playerTiles reference to the original array.
-        p.playerTiles = originalPlayerTiles;
-
-        if(newLongestChain > prevLongestChain){
-            getLastDiscardedTile();
-        }
-        else{
-            getTopTile();
+        if(newLongestChain > prevLongestChain);
+        else
+        {
+            for(int i = 0 ; i < 15 ; i++)
+            {
+                if(lastDiscardedTile == p.playerTiles[i])
+                {
+                    p.getAndRemoveTile(i);
+                    break;
+                }
+            }
+            players[getCurrentPlayerIndex()].addTile(tiles[tileCount++]);
         }
     }
 
@@ -183,12 +180,14 @@ public class SimplifiedOkeyGame {
 
             currTileValue = currPlayerTiles[i].value;
 
-            if (currTileValue + 1 == prevTileValue || prevTileValue == -1) {
+            if (currTileValue - 1 == prevTileValue || prevTileValue == -1) {
                 runningChainLength++;
             }
             else if (currTileValue == prevTileValue) {
+                System.out.println("Computer discarded " + i);
                 discardTile(i);
                 duplicateFound = true;
+                break;
             }
             else {
 
@@ -205,12 +204,11 @@ public class SimplifiedOkeyGame {
                     minChainIndex = i;
                 }
 
-                prevTileValue = currTileValue;
             }
-
-            if (!duplicateFound) discardTile(minChainIndex);
-            
+            prevTileValue = currTileValue;
         }
+        if (!duplicateFound) {discardTile(minChainIndex); System.out.println("Computer discarded " + minChainIndex);}
+
     }
 
     /*
