@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 
 public class SimplifiedOkeyGame {
@@ -58,13 +59,19 @@ public class SimplifiedOkeyGame {
     }
 
     /*
-     * TODO: get the top tile from tiles array for the current player
+     * Gets the top tile from tiles array for the current player
      * that tile is no longer in the tiles array (this simulates picking up the top tile)
      * and it will be given to the current player
      * returns the toString method of the tile so that we can print what we picked
      */
     public String getTopTile() {
-        return null;
+
+        Tile addedTile = tiles[tiles.length - 1];
+        players[currentPlayerIndex].addTile(addedTile);
+
+        tiles = Arrays.copyOf(tiles, tiles.length - 1);
+
+        return addedTile.toString();
     }
 
     /**
@@ -132,31 +139,87 @@ public class SimplifiedOkeyGame {
     }
 
     /*
-     * TODO: pick a tile for the current computer player using one of the following:
-     * - picking from the tiles array using getTopTile()
-     * - picking from the lastDiscardedTile using getLastDiscardedTile()
-     * you should check if getting the discarded tile is useful for the computer
-     * by checking if it increases the longest chain length, if not get the top tile
+     * Method that picks a tile for the computer.
+     * Checks if getting the discarded tile is useful for the computer
+     * by checking if it increases the longest chain length, if it does
+     *  gets the discarded tile if not gets the top tile
      */
     public void pickTileForComputer() {
 
+        Player p = players[getCurrentPlayerIndex()];
+
+        // A reference to the original array.
+        Tile[] originalPlayerTiles = p.playerTiles;
+        int prevLongestChain = p.findLongestChain();
+
+        // Changes the playerTiles reference to a temporary array and adds the last discarded tile to that array to use the findLongestChain() method.
+        p.playerTiles = Arrays.copyOf(p.playerTiles, p.playerTiles.length);
+        p.addTile(lastDiscardedTile);
+        int newLongestChain = p.findLongestChain();
+
+        // Changes the playerTiles reference to the original array.
+        p.playerTiles = originalPlayerTiles;
+
+        if(newLongestChain > prevLongestChain){
+            getLastDiscardedTile();
+        }
+        else{
+            getTopTile();
+        }
     }
 
     /*
-     * TODO: Current computer player will discard the least useful tile.
-     * you may choose based on how useful each tile is
+     * Current computer player discards the least useful tile.
+     * The least useful tiles are duplicates, and then the tiles that contribute to the shortest chain.
      */
     public void discardTileForComputer() {
 
+        boolean duplicateFound = false;
+        Tile[] currPlayerTiles = players[getCurrentPlayerIndex()].playerTiles;
+
+        int minChainLength = 16, minChainIndex = 0, runningChainIndex = 0, runningChainLength = 0, currTileValue, prevTileValue = -1;
+
+        for (int i = 0; i < currPlayerTiles.length; i++) {
+
+            currTileValue = currPlayerTiles[i].value;
+
+            if (currTileValue + 1 == prevTileValue || prevTileValue == -1) {
+                runningChainLength++;
+            }
+            else if (currTileValue == prevTileValue) {
+                discardTile(i);
+                duplicateFound = true;
+            }
+            else {
+
+                if (minChainLength > runningChainLength) {
+                    minChainLength = runningChainLength;
+                    minChainIndex = runningChainIndex;
+                }
+
+                runningChainIndex = i;
+                runningChainLength = 1;
+
+                // Edge case for the end.
+                if(i == currPlayerTiles.length - 1){
+                    minChainIndex = i;
+                }
+
+                prevTileValue = currTileValue;
+            }
+
+            if (!duplicateFound) discardTile(minChainIndex);
+            
+        }
     }
 
     /*
-     * TODO: discards the current player's tile at given index
-     * this should set lastDiscardedTile variable and remove that tile from
+     * Discards the current player's tile at given index
+     * Sets the lastDiscardedTile variable and removes that tile from
      * that player's tiles
      */
     public void discardTile(int tileIndex) {
-        
+        lastDiscardedTile = players[getCurrentPlayerIndex()].getAndRemoveTile(tileIndex);
     }
 
     public void displayDiscardInformation() {
