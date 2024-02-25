@@ -55,10 +55,12 @@ public class ApplicationMain {
                 // after the first turn we can pick up
                 if(!firstTurn) {
                     if(playerChoice == 1) {
+                        game.players[0].addTile(game.tiles[++game.tileCount]);
                         System.out.println("You picked up: " + game.getTopTile());
                         firstTurn = false;
                     }
                     else if(playerChoice == 2) {
+                        game.players[0].addTile(game.lastDiscardedTile);
                         System.out.println("You picked up: " + game.getLastDiscardedTile());
                     }
 
@@ -123,6 +125,7 @@ public class ApplicationMain {
 
                 // computer picks a tile from tile stack or other player's discard
                 game.pickTileForComputer();
+                game.displayCurrentPlayersTiles();
 
                 gameContinues = !game.didGameFinish() && game.hasMoreTileInStack();
 
