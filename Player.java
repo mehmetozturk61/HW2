@@ -39,6 +39,7 @@ public class Player {
 
             if (currentValue == previousValue + 1) { // If current value is consecutive
                 currentChain++;
+
             }
             else if (currentValue != previousValue) { // Ignoring the case that player has same number multiple times
                 if (currentChain > longestChain) { // If current chain is larger than the longest chain so far
@@ -47,6 +48,10 @@ public class Player {
 
                 // Resetting the chain
                 currentChain = 1;
+            }
+
+            if (currentChain > longestChain) { // If current chain is larger than the longest chain so far
+                longestChain = currentChain;
             }
 
             // Updating previous value

@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Random;
 
 public class SimplifiedOkeyGame {
@@ -184,7 +183,7 @@ public class SimplifiedOkeyGame {
                 runningChainLength++;
             }
             else if (currTileValue == prevTileValue) {
-                System.out.println("Computer discarded " + currTileValue); 
+                System.out.println(players[getCurrentPlayerIndex()].getName() + " discarded " + currTileValue); 
                 discardTile(i);
                 duplicateFound = true;
                 break;
@@ -207,7 +206,7 @@ public class SimplifiedOkeyGame {
             }
             prevTileValue = currTileValue;
         }
-        if (!duplicateFound) { System.out.println("Computer discarded " + currPlayerTiles[minChainIndex]); discardTile(minChainIndex);}
+        if (!duplicateFound) { System.out.println(players[getCurrentPlayerIndex()].getName() + " discarded " + currPlayerTiles[minChainIndex]); discardTile(minChainIndex);}
 
     }
 
