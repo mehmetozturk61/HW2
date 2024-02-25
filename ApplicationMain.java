@@ -30,7 +30,7 @@ public class ApplicationMain {
         while(gameContinues) {
             
             int currentPlayer = game.getCurrentPlayerIndex();
-            System.out.println(game.getCurrentPlayerName() + "'s turn.");
+            System.out.println("\n" + game.getCurrentPlayerName() + "'s turn.");
             
             if(currentPlayer == 0) {
                 // this is the human player's turn
@@ -55,8 +55,9 @@ public class ApplicationMain {
                 // after the first turn we can pick up
                 if(!firstTurn) {
                     if(playerChoice == 1) {
-                        game.players[0].addTile(game.tiles[++game.tileCount]);
+                        game.players[0].addTile(game.tiles[game.tileCount]);
                         System.out.println("You picked up: " + game.getTopTile());
+                        game.tileCount++;
                         firstTurn = false;
                     }
                     else if(playerChoice == 2) {
@@ -97,14 +98,14 @@ public class ApplicationMain {
                     game.passTurnToNextPlayer();
                 }
                 else{
-                    if(!game.didGameFinish()) {
+                    if(game.didGameFinish()) {
                         // if we finish the hand we win
                         System.out.println("Congratulations, you win!");    
                     }
                     else
                     {
                         Player Winners[] = game.getPlayerWithHighestLongestChain();
-                        if(Winners.length > 1)
+                        if(Winners.length >= 1)
                         {
                             System.out.println( "The winners are:");
                             System.out.println( "------------------");
@@ -135,14 +136,14 @@ public class ApplicationMain {
                     game.passTurnToNextPlayer();
                 }
                 else{
-                    if(!game.didGameFinish()) {
+                    if(game.didGameFinish()) {
                         // current computer character wins
                         System.out.println(game.getCurrentPlayerName() + " wins.");
                     }
                     else
                     {
                         Player Winners[] = game.getPlayerWithHighestLongestChain();
-                        if(Winners.length > 1)
+                        if(Winners.length >= 1)
                         {
                             System.out.println( "The winners are:");
                             System.out.println( "------------------");

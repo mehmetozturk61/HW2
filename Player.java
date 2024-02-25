@@ -14,7 +14,7 @@ public class Player {
      */
     public boolean checkWinning() {
         int playerChain = this.findLongestChain();
-        if(playerChain + 1 == 14){
+        if(playerChain == 14){
             return true;
         } 
         return false;

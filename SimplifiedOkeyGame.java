@@ -93,7 +93,7 @@ public class SimplifiedOkeyGame {
      */
     public boolean didGameFinish() {
         
-        return players[this.getCurrentPlayerIndex()].checkWinning() || !this.hasMoreTileInStack(); 
+        return players[this.getCurrentPlayerIndex()].checkWinning(); 
     }
 
     /* finds the player who has the highest number for the longest chain
@@ -184,7 +184,7 @@ public class SimplifiedOkeyGame {
                 runningChainLength++;
             }
             else if (currTileValue == prevTileValue) {
-                System.out.println("Computer discarded " + i);
+                System.out.println("Computer discarded " + currTileValue); 
                 discardTile(i);
                 duplicateFound = true;
                 break;
@@ -207,7 +207,7 @@ public class SimplifiedOkeyGame {
             }
             prevTileValue = currTileValue;
         }
-        if (!duplicateFound) {discardTile(minChainIndex); System.out.println("Computer discarded " + minChainIndex);}
+        if (!duplicateFound) { System.out.println("Computer discarded " + currPlayerTiles[minChainIndex]); discardTile(minChainIndex);}
 
     }
 
