@@ -33,6 +33,8 @@ public class Player {
         int previousValue = -1;
 
         for (Tile t : playerTiles) {
+            if(t==null)
+                continue;
             currentValue = t.getValue();
 
             if (currentValue == previousValue + 1) { // If current value is consecutive
@@ -59,12 +61,12 @@ public class Player {
      */
     public Tile getAndRemoveTile(int index) {
         Tile removedTile = playerTiles[index];
-        for(int i = index + 1; i <= numberOfTiles; i++){
+        numberOfTiles--;
+        for(int i = index + 1; i < 15; i++)
+        {
             playerTiles[i-1] = playerTiles[i]; 
         }
-        numberOfTiles--;
-
-        
+        playerTiles[14] = null;
         return removedTile;
     }
 
